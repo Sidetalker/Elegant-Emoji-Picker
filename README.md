@@ -82,6 +82,44 @@ func emojiPicker(_ picker: ElegantEmojiPicker, didSelectEmoji emoji: Emoji?) {
 
 It is that easy. If simply offering emojis is all your soul desires, we are done. But if you are a more intricate type of coder and want more control, keep on readin'.
 
+### SwiftUI Usage (iOS 14+)
+
+For SwiftUI applications, you can use the `.emojiPicker` view modifier to present the emoji picker. You'll need two state variables: one to control the presentation of the picker and another to hold the selected emoji.
+
+```swift
+import SwiftUI
+import ElegantEmojiPicker
+
+struct MySwiftUIView: View {
+    @State private var isEmojiPickerPresented = false
+    @State private var selectedEmoji: Emoji? = nil
+
+    var body: some View {
+        VStack {
+            if let emoji = selectedEmoji {
+                Text(emoji.emoji)
+                    .font(.largeTitle)
+            } else {
+                Text("Tap to pick an emoji")
+            }
+
+            Button(selectedEmoji == nil ? "Pick Emoji" : "Change Emoji") {
+                isEmojiPickerPresented.toggle()
+            }
+        }
+        .emojiPicker(
+            isPresented: $isEmojiPickerPresented,
+            selectedEmoji: $selectedEmoji
+            // Optionally, pass configuration and localization:
+            // configuration: ElegantConfiguration(showRandom: false),
+            // localization: ElegantLocalization(searchFieldPlaceholder: "Find your emoji...")
+        )
+    }
+}
+```
+
+The `selectedEmoji` will be an optional `Emoji` object. It will be `nil` if the user dismisses the picker without making a selection or resets their choice (if the reset button is shown and used).
+
 ## 🎨 Configuration
 
 ### Showing or hiding features
